@@ -1,0 +1,61 @@
+<style>
+    /* Features Section Styling */
+    .feature {
+        opacity: 0;
+        transform: translateY(-200px);
+        transition: opacity 1s ease-out, transform 1s ease-out;
+    }
+
+    .feature.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* 3D hover effect */
+    .feature:hover {
+        transform: translate3d(40px, 40px, 70px);
+        transition: transform 0.8s, box-shadow 0.8s;
+        box-shadow: -20px -20px 40px rgb(160, 32, 240, 0.2);
+    }
+</style>
+
+<!-- Features Section -->
+<section class="container mx-auto flex flex-col items-center text-center relative vh100">
+    <h1 class="text-3xl md:text-5xl font-bold mt-4 mb-8 feature">
+        İnovasyonlarımız!
+    </h1>
+    <div class="container mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <!-- Feature 1 -->
+            <div class="feature bg-white rounded-lg shadow-lg p-8">
+                <div class="flex justify-center mb-6">
+                    <img src="assets/images/algorithm.png" style="height:200px;" alt="Algorithm icon">
+                </div>
+                <h3 class="text-2xl font-semibold text-gray-900 mb-4 text-center">Gelişmiş Algoritmalar</h3>
+                <p class="text-gray-600 text-center">
+Projemizde, nesne tespiti için YoloV8 algoritmasının gelişmiş versiyonları olan YoloV8n ve YoloV8x modellerini kullandık. Bu modeller, gökyüzündeki nesnelerin (kuş ya da İHA) hızlı ve verimli bir şekilde ayrımını sağlıyor. YoloV8, yüksek doğruluk ve hız avantajı sunarak, gerçek zamanlı uygulamalarda üstün performans sergiler.                </p>
+            </div>
+
+            <!-- Feature 2 -->
+            <div class="feature bg-white rounded-lg shadow-lg p-8">
+                <div class="flex justify-center mb-6">
+                    <img src="assets/images/user.png" style="height:200px;" alt="User-friendly icon">
+                </div>
+                <h3 class="text-2xl font-semibold text-gray-900 mb-4 text-center">Kullanıcı Dostu Arayüz</h3>
+                <p class="text-gray-600 text-center">
+    Projemizde kullanıcı dostu bir arayüz için Tailwind CSS kullandık. Responsive ve hareketli tasarımıyla her cihazda uyumlu, ilgi çekici bir deneyim sunuyor, görsel zenginlik ve etkileşim sağlayarak hızlı ve sorunsuz kullanım sağlıyoruz.
+                </p>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="feature bg-white rounded-lg shadow-lg p-8">
+                <div class="flex justify-center mb-6">
+                    <img src="assets/images/data.png" style="height:200px;" alt="Data icon">
+                </div>
+                <h3 class="text-2xl font-semibold text-gray-900 mb-4 text-center">İstatistiksel Analiz</h3>
+                <p class="text-gray-600 text-center">
+Projemizde, gökyüzündeki insansız hava araçlarını (İHA) ve kuşları tespit etmek amacıyla hem İHA hem de kuş fotoğraflarını içeren bir veri seti oluşturduk. İlk olarak, 4.000 fotoğraf ile eğittiğimiz YOLOv8x modeli %93 doğruluk oranına ulaştı. Veri setimizi 5.000 fotoğrafa çıkararak yeniden eğittiğimizde ise doğruluk oranımız %96’ya yükseldi.                </p>
+            </div>
+        </div>
+    </div>
+</section>

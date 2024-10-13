@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YOLOv8x-seg Nesne Tespiti</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='yolo.css') }}">
+
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h1 class="title">Kuş ve İHA Tespiti</h1> 
+
+    <div id="dragDropArea" class="drag-drop-area">
+
+      <img id="uploadIcon" src="{{ url_for('static', filename='upload_icon.png') }}" alt="Upload Icon" />
+      <p id="placeholderText">Tıklayın veya resmi sürükleyin</p>
+
+    </div>
+
+    <input type="file" id="imageUpload" accept="image/*" onchange="fileUploadInput(event)" />
+
+    <p id="processingTime" style="margin-top: 10px;"></p>
+    <p id="detectionMessage" style="color: red;"></p>
+
+  </div>
+
+<!-- Modal HTML -->
+<div id="captchaPopup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:1000;">
+  <iframe id="captchaFrame" src="{{ url_for('captcha') }}" width="100%" height="100%"></iframe>
+</div>
+
+
+
+  <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+  <script src="{{ url_for('static', filename='yolo.js') }}"></script>
+
+</body>
+
+</html>

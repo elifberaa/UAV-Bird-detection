@@ -1,0 +1,65 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #E6E6FA;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.title {
+  font-size: 32px; /* Adjust font size as needed */
+  color: #333; /* Set a color for the title */
+  margin-bottom: 40px; /* Space between title and drag-and-drop area */
+}
+
+.container {
+  text-align: center;
+}
+
+.drag-drop-area {
+  width: 800px;
+  height: 500px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  margin-bottom: 20px;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  overflow: auto;
+}
+
+.drag-drop-area.dragover {
+  background-color: rgb(242, 241, 241);
+}
+
+.drag-drop-area img {
+  max-width: 100%; /* Adjust size as needed */
+  max-height: 100%;
+}
+
+.drag-drop-area #uploadIcon{
+  opacity: 0.6;
+  margin-bottom: 20px;
+  width: 120px;
+  height: 120px;
+}
+
+.drag-drop-area p {
+  color: rgba(0, 0, 0, 0.6); /* Pale text color */
+  opacity: 0.6; /* Make the text pale */
+  font-size: 20px;
+}
+
+input[type="file"] {
+  display: none; /* Hide the file input */
+}

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Captcha</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Prevent background scrolling*/
+        }
+
+        /* Popup modal styles */
+        #popup {
+            display: none; /* Hidden by default */
+            position: fixed; /* remains constant */
+            z-index: 1; /* stays on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* full width */
+            height: 100%; /* full height */
+            background-color: rgba(0, 0, 0, 0.5); /* opaque black */
+            justify-content: center; /* vertical centering */
+            align-items: center; /* Horizontal centering */
+        }
+
+        #popupContent {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 400px; /* Maximum width for popup */
+            width: 90%; /* Responsive width */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        #grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        img {
+            width: 100%; 
+            height: 150px; /* Give fixed height */
+            object-fit: cover; /* Cut and fill image */
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+
+        img.selected {
+            border: 2px solid green;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 24px;
+        }
+
+        
+        #confirmButton, #closeButton {
+            display: inline-block;
+            margin: 5px; /* Butonlar arasında boşluk bırak */
+        }
+        
+    </style>
+</head>
+<body>
+    <div id="popup">
+        <div id="popupContent">
+            <h2 id="prompt"></h2>
+            <div id="grid"></div>
+            <div style="margin-top: 20px; display: flex; justify-content: center;">
+                <button id="confirmButton" onclick="confirmSelection()" style="display:none; margin-right: 10px;">Onayla</button>
+                <button id="closeButton" onclick="closePopup()">Kapat</button>
+            </div>
+            <div id="result"></div>
+        </div>
+        
+    </div>
+    <div id="captchaPopup" style="display:none;">
+        <iframe id="captchaFrame" src="captcha.html" width="100%" height="100%"></iframe>
+    </div>
+    
+
+    <script>
+        const birdImages = Array.from({length: 400}, (_, i) => `static/images/bird/bird${i + 1}.jpg`);
+        const droneImages = Array.from({length: 400}, (_, i) => `static/images/drone/drone${i + 1}.jpg`);
+        const otherImages = Array.from({length: 400}, (_, i) => `static/images/other/other${i + 1}.jpg`);
+        const folders = ['bird', 'drone'];
+
+        function getRandomImages(images, count) {
+            const shuffled = images.sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, count);
+        }
+        function openCaptchaPopup() {
+            document.getElementById("captchaPopup").style.display = "block";
+        }
+        
+
+        function startCaptcha() {
+            const selectedFolder = folders[Math.floor(Math.random() * folders.length)];
+            document.getElementById('prompt').innerText = `${selectedFolder.charAt(0).toUpperCase() + selectedFolder.slice(1)} fotoğraflarını seçin`;
+            
+            // Upload images
+            loadCaptchaImages(selectedFolder);
+        }
+        
+        function loadCaptchaImages(selectedFolder) {
+            const selectedImages = getRandomImages(selectedFolder === 'bird' ? birdImages : droneImages, 3);
+            const otherFolder = selectedFolder === 'bird' ? 'drone' : 'bird';
+            const otherImagesSelected = getRandomImages(otherFolder === 'bird' ? birdImages : droneImages, 3);
+            const otherImagesFinal = getRandomImages(otherImages, 3);
+        
+            const allImages = [...selectedImages, ...otherImagesSelected, ...otherImagesFinal];
+            shuffleArray(allImages);
+        
+            const grid = document.getElementById('grid');
+            grid.innerHTML = ''; // Clear previous content
+        
+            allImages.forEach(imgSrc => {
+                const img = document.createElement('img');
+                img.src = imgSrc;
+                img.onclick = () => toggleSelection(img);
+                grid.appendChild(img);
+            });
+        
+            document.getElementById('confirmButton').style.display = 'block';
+        }
+        
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        const selectedImages = new Set();
+
+        function toggleSelection(img) {
+            img.classList.toggle('selected');
+            const imgSrc = img.src;
+            if (selectedImages.has(imgSrc)) {
+                selectedImages.delete(imgSrc);
+            } else {
+                selectedImages.add(imgSrc);
+            }
+        }
+
+        
+
+        function confirmSelection() {
+            const selectedFolder = document.getElementById('prompt').innerText.split(' ')[0].toLowerCase();
+            const userSelectedImages = Array.from(selectedImages);
+            const isCorrect = userSelectedImages.length === 3 &&
+                userSelectedImages.every(img => {
+                    const imgName = img.split('/').pop();
+                    return selectedFolder === 'bird' ? imgName.startsWith('bird') : imgName.startsWith('drone');
+                });
+        
+            // Send result to yolo.js
+            window.parent.postMessage(isCorrect ? 'captcha_success' : 'captcha_fail', '*');
+        
+            // Cleaning operations
+            selectedImages.clear();
+            document.getElementById('grid').innerHTML = '';
+            document.getElementById('confirmButton').style.display = 'none';
+            document.getElementById('prompt').innerText = '';
+            
+        }
+        
+        document.getElementById("closeButton").addEventListener("click", function() {
+            window.parent.postMessage('close_captcha', '*'); // Send message to yolo.js
+        });
+        
+        
+
+        document.getElementById("closeButton").addEventListener("click", function() {
+            window.parent.postMessage('close_captcha', '*'); // Send message to yolo.js
+            // Cleaning operations
+            document.getElementById('grid').innerHTML = '';
+            document.getElementById('confirmButton').style.display = 'none';
+            document.getElementById('prompt').innerText = '';
+        });
+        
+        
+        
+
+        // Automatically launch on page load
+        window.onload = () => {
+            document.getElementById('popup').style.display = 'flex'; // Show popup
+            startCaptcha();
+        };
+    </script>
+</body>
+</html>

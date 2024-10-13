@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AeroGuard AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+<body class="bg-gray-50">
+
+
+
+<div id="main"></div>
+<div id="features"></div>
+<div id="team"></div>
+<div id="integration"></div>
+
+
+
+<script src="assets/js/main.js"></script>
+
+<script>
+
+    function loadComponent(id, url, callback) {
+        fetch(url)
+            .then(response => response.text())
+            .then(data => {
+                const container = document.getElementById(id);
+                container.innerHTML = data;
+                if (callback) callback();  // Execute the callback after loading content
+            })
+            .catch(error => {
+                console.error(`Error loading ${id}:`, error);
+            });
+    }
+
+    loadComponent('main', 'components/main.html');
+    loadComponent('features', 'components/features.html', setupAnimations);
+    loadComponent('team', 'components/team.html', setupAnimationsTeam);
+
+</script>
+
+</body>
+</html>
