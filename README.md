@@ -1,1 +1,2 @@
+During my internship, we developed a machine learning model that can Detect Birds and Unmanned Aerial Vehicles with YOLOV8 Algorithm. In addition, we have integrated this model into the website we created. To briefly mention the project, the images uploaded by the user are sent to the server in base64 format and the server takes this data and saves it to the file system. The YOLOv8x-seg model is integrated through the Ultraytics library. The model makes instant detection on the pictures uploaded on the website.
 
